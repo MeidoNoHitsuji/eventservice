@@ -1,0 +1,85 @@
+<div>
+    <b-modal id="create_modal" centered>
+        <template v-slot:modal-title>
+            <template v-if="type=='create'">
+                Форма создания нового событие!
+            </template>
+            <template v-else>
+                Форма редактирования событие!
+            </template>
+            
+        </template>
+        <template v-slot:default>
+
+            <b-form-group
+                id="input-group-1"
+                label="Заголовок:"
+                label-for="input-1"
+            >
+                <b-form-input
+                    id="input-1"
+                    v-model="title"
+                    type="text"
+                    required
+                    placeholder="Введите заголовок..."
+                ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+                id="input-group-2"
+                label="Описание:"
+                label-for="input-2"
+            >
+                <b-form-textarea
+                    id="input-2"
+                    v-model="description"
+                    max-rows="6"
+                    placeholder="Введите описание..."
+                ></b-form-textarea>
+            </b-form-group>
+
+            <b-form-group
+                id="input-group-3"
+                label="Тип:"
+                label-for="input-3"
+            >
+                <b-form-select 
+                    v-model="event_type"
+                    id="input-3"
+                    :options="event_types"
+                >
+                    <template v-slot:first>
+                        <option value="">Выберите тип..</option>
+                    </template>
+                </b-form-select>
+            </b-form-group>
+
+            <b-form-group
+                id="input-group-4"
+                label="Дата назначения:"
+            >
+                <b-input-group>
+                    <b-form-datepicker v-model="date" placeholder="Выберите дату"></b-form-datepicker>
+                    <b-form-timepicker v-model="time" show-seconds locale="ru" placeholder="Выберите время"></b-form-timepicker>
+                </b-input-group>
+                
+            </b-form-group>
+
+        </template>
+        <template v-slot:modal-footer>
+            <template v-if="type=='create'">
+                <b-button variant="success" @click="createEvent">
+                    Создать
+                </b-button>
+            </template>
+            <template v-else>
+                <b-button variant="danger" @click="deleteEvent">
+                    Удалить
+                </b-button>
+                <b-button variant="success" @click="updateEvent">
+                    Обновить
+                </b-button>
+            </template>
+        </template>
+    </b-modal>
+</div>
