@@ -99,7 +99,7 @@
                 if (!this.$refs.reg.checkValidity()) {
                     return
                 }
-                HTTP.post('/registration', {
+                HTTP.post('/auth/registration/', {
                     email: this.reg.email,
                     username: this.reg.username,
                     password: this.reg.password
@@ -114,14 +114,14 @@
                     }
                 })
                 .catch(error => {
-                    this.toast('Серверная ошибка', error, 'danger')
+                    this.toast('Серверная ошибка', error ? error : "Неизвестная ошибка", 'danger')
                 });
             },
             signup: function () {
                 if (!this.$refs.log.checkValidity()) {
                     return
                 }
-                HTTP.post('/signup', {
+                HTTP.post('/auth/signup/', {
                     username: this.log.username,
                     password: this.log.password
                 })
@@ -135,7 +135,7 @@
                     }
                 })
                 .catch(error => {
-                    this.toast('Серверная ошибка', error, 'danger')
+                    this.toast('Серверная ошибка', error ? error : "Неизвестная ошибка", 'danger')
                 });
             }
         }

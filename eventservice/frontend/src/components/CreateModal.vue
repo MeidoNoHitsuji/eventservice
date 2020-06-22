@@ -96,16 +96,14 @@
                 this.$bvModal.hide("create_modal")
             },
             deleteEvent: function () {
-                HTTP.post('/delete', {
-                    event_id: this.id,
-                }, {
+                HTTP.delete(`/event/${this.id}/`, {
                     headers: {
                         Authorization: 'Token '+this.$parent.token
                     }
                 })
                 .then(response => {
                     let data = response.data
-                    if (data.ok == 1) {
+                    if (response.status == 204) {
                         let i = 0
                         let index = -1
                         this.table_events.items.forEach(f => {
@@ -120,18 +118,17 @@
                             this.table_events.updateTable()
                             this.hideModal()
                         }
-                        this.toast("Успех", data.data, "success")
+                        this.toast("Успех", "Событие успешно удалено", "success")
                     } else {
-                        this.toast('Ошибка', data.error, 'danger')
+                        this.toast('Ошибка', "Неизвестная ошибка", 'danger')
                     }
                 })
                 .catch(error => {
-                    this.toast('Серверная ошибка', error, 'danger')
+                    this.toast('Серверная ошибка', error ? error : "Неизвестная ошибка", 'danger')
                 });
             },
             updateEvent: function () {
-                HTTP.post('/update', {
-                    event_id: this.id,
+                HTTP.put(`/event/${this.id}/`, {
                     title: this.title,
                     description: this.description,
                     event_type: this.event_type,
@@ -143,7 +140,7 @@
                 })
                 .then(response => {
                     let data = response.data
-                    if (data.ok == 1) {
+                    if (response.status == 200) {
                         let i = 0
                         let index = -1
                         this.table_events.items.forEach(f => {
@@ -164,13 +161,13 @@
                             this.hideModal()
                             this.table_events.updateTable()
                         }
-                        this.toast("Успех", data.data, "success")
+                        this.toast("Успех", "Событие обновлено", "success")
                     } else {
-                        this.toast('Ошибка', data.error, 'danger')
+                        this.toast('Ошибка', "Неизвестная ошибка", 'danger')
                     }
                 })
                 .catch(error => {
-                    this.toast('Серверная ошибка', error, 'danger')
+                    this.toast('Серверная ошибка', error ? error : "Неизвестная ошибка", 'danger')
                 });
             },
             createEvent: function () {
@@ -182,7 +179,7 @@
                     this.toast("Ошибка", "Вам необходимо выбрать тип события!!", "danger")
                     return
                 }
-                HTTP.post('/create', {
+                HTTP.post('/event/', {
                     title: this.title,
                     description: this.description,
                     event_type: this.event_type,
@@ -194,13 +191,13 @@
                 })
                 .then(response => {
                     let data = response.data
-                    if (data.ok == 1) {
+                    if (response.status == 201) {
                         this.table_events.items.push({
-                            id: data.data.id,
-                            title: data.data.title,
-                            description: data.data.description,
-                            event_type: data.data.event_type,
-                            date_appointed: data.data.date_appointed.replace('T', ' ').replace('Z', '')
+                            id: data.id,
+                            title: data.title,
+                            description: data.description,
+                            event_type: data.event_type,
+                            date_appointed: data.date_appointed.replace('T', ' ').replace('Z', '')
                         })
                         this.toast("Успех", "Новое событие успешно создано!", "success")
                     } else {
@@ -208,7 +205,7 @@
                     }
                 })
                 .catch(error => {
-                    this.toast('Серверная ошибка', error, 'danger')
+                    this.toast('Серверная ошибка', error ? error : "Неизвестная ошибка", 'danger')
                 });
             }
         },

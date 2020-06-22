@@ -78,7 +78,7 @@
                     this.toast('Ошибка', "Сначала вы должны авторизоваться", 'danger')
                     return
                 }
-                HTTP.post('/get_data', {}, {
+                HTTP.post('/event/get_data/', {}, {
                     headers: {
                         Authorization: 'Token '+this.$parent.token
                     }
@@ -100,7 +100,7 @@
                     }
                 })
                 .catch(error => {
-                    this.toast('Серверная ошибка', error, 'danger')
+                    this.toast('Серверная ошибка', error ? error : "Неизвестная ошибка", 'danger')
                 });
             }
         },
